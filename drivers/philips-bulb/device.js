@@ -42,10 +42,8 @@ class PhilipsBulbDevice extends Homey.Device {
     this.miio.color(colortemp)
       .then(result => {
         callback(null, value)
-        console.log('Color updated: ', colortemp)
       })
       .catch(error => {
-        console.log('Color updated error: ', error)
         callback(error, false)
       });
   }
