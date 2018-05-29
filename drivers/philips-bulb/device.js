@@ -60,7 +60,9 @@ class PhilipsBulbDevice extends Homey.Device {
         this.miio = miiodevice;
 
         this.miio.on('colorChanged', c => {
-          console.log('Color changed: ', c);
+          console.log('Color changed 1: ', c.values);
+          console.log('Color changed 2: ', c.values[0]);
+          console.log('Color changed 3: ', c.temperature);
           var colortemp = util.normalize(c, 3000, 5700);
           console.log('Color changed normalized: ', colortemp);
           if (this.getCapabilityValue('light_temperature') != colortemp) {
