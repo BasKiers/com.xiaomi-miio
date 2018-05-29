@@ -37,13 +37,14 @@ class PhilipsBulbDevice extends Homey.Device {
     var colorvalue = util.denormalize(value, 3000, 5700);
     var colortemp = ''+ colorvalue +'K';
 
-    this.miio.color(colortemp)
+    this.miio.setColor(colortemp)
       .then(result => {
         callback(null, value)
         console.log(result);
       })
       .catch(error => {
         callback(error, false)
+        console.log(error);
       });
   }
 
