@@ -9,8 +9,6 @@ class PhilipsBulbDevice extends Homey.Device {
   onInit() {
     this.createDevice();
 
-    console.log("Initializing device");
-
     this.registerCapabilityListener('onoff', this.onCapabilityOnoff.bind(this));
     this.registerCapabilityListener('dim', this.onCapabilityDim.bind(this));
     this.registerCapabilityListener('light_temperature', this.onCapabilityLightTemperature.bind(this));
@@ -50,7 +48,6 @@ class PhilipsBulbDevice extends Homey.Device {
 
   // HELPER FUNCTIONS
   createDevice() {
-    console.log("Creating device");
     miio.device({
         address: this.getSetting('address'),
         token: this.getSetting('token')
@@ -77,7 +74,6 @@ class PhilipsBulbDevice extends Homey.Device {
 
   pollDevice(interval) {
     clearInterval(this.pollingInterval);
-    console.log("Polling device");
 
     this.pollingInterval = setInterval(() => {
       const getData = async () => {
