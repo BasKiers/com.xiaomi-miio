@@ -38,9 +38,16 @@ class PhilipsBulbDevice extends Homey.Device {
   onCapabilityLightTemperature(value, opts, callback) {
     var colorvalue = util.denormalize(value, 3000, 5700);
     var colortemp = ''+ colorvalue +'K';
+
     this.miio.color(colortemp)
-      .then(result => { callback(null, value) })
-      .catch(error => { callback(error, false) });
+      .then(result => {
+        callback(null, value)
+        console.log('Color updated: ', colortemp)
+      })
+      .catch(error => {
+        console.log('Color updated error: ', error)
+        callback(error, false)
+      });
   }
 
   // HELPER FUNCTIONS
@@ -53,9 +60,9 @@ class PhilipsBulbDevice extends Homey.Device {
         this.miio = miiodevice;
 
         this.miio.on('colorChanged', c => {
-          console.log('Color: ', c);
+          console.log('Color changed: ', c);
           var colortemp = util.normalize(c, 3000, 5700);
-          console.log('Color normalized: ', colortemp);
+          console.log('Color changed normalized: ', colortemp);
           if (this.getCapabilityValue('light_temperature') != colortemp) {
             this.setCapabilityValue('light_temperature', colortemp);
           }
