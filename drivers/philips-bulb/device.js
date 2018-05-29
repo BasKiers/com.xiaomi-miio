@@ -69,8 +69,10 @@ class PhilipsBulbDevice extends Homey.Device {
       const getData = async () => {
         try {
           const power = await this.miio.power();
-          const brightness = await this.miio.brightness()
+          const brightness = await this.miio.brightness();
           const colorTemperature = await this.miio.color();
+
+          console.log(colorTemperature);
 
           if (this.getCapabilityValue('onoff') != power) {
             this.setCapabilityValue('onoff', power);
@@ -79,8 +81,8 @@ class PhilipsBulbDevice extends Homey.Device {
           if (this.getCapabilityValue('dim') != dim) {
             this.setCapabilityValue('dim', dim);
           }
-          var colorvalue = colorTemperature.replace('K', '');
-          var colortemp = util.normalize(colorvalue, 3000, 5700);
+          //var colorvalue = colorTemperature.replace('K', '');
+          var colortemp = util.normalize(colorTemperature, 3000, 5700);
           if (this.getCapabilityValue('light_temperature') != colortemp) {
             this.setCapabilityValue('light_temperature', colortemp);
           }
