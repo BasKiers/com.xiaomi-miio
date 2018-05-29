@@ -52,12 +52,19 @@ class PhilipsBulbDevice extends Homey.Device {
       }).then(miiodevice => {
         this.miio = miiodevice;
 
+        this.miio.on('colorChanged', c => {
+          console.log('Color: ', c);
+          var colortemp = util.normalize(c, 3000, 5700);
+          console.log('Color normalized: ', colortemp);
+          if (this.getCapabilityValue('light_temperature') != colortemp) {
+            this.setCapabilityValue('light_temperature', colortemp);
+          }
+        });
+
         var interval = this.getSetting('polling') || 60;
         this.pollDevice(interval);
     }).catch(function (error) {
-      return reject(error);
-      console.log("Error:");
-      console.log(error);
+      this.log(error);
     });
   }
 
@@ -70,9 +77,6 @@ class PhilipsBulbDevice extends Homey.Device {
         try {
           const power = await this.miio.power();
           const brightness = await this.miio.brightness();
-          const colorTemperature = await this.miio.color();
-
-          console.log(colorTemperature);
 
           if (this.getCapabilityValue('onoff') != power) {
             this.setCapabilityValue('onoff', power);
@@ -81,11 +85,7 @@ class PhilipsBulbDevice extends Homey.Device {
           if (this.getCapabilityValue('dim') != dim) {
             this.setCapabilityValue('dim', dim);
           }
-          //var colorvalue = colorTemperature.replace('K', '');
-          var colortemp = util.normalize(colorTemperature, 3000, 5700);
-          if (this.getCapabilityValue('light_temperature') != colortemp) {
-            this.setCapabilityValue('light_temperature', colortemp);
-          }
+
           if (!this.getAvailable()) {
             this.setAvailable();
           }
