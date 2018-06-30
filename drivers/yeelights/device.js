@@ -51,24 +51,6 @@ class YeelightDevice extends Homey.Device {
     callback(null, value);
   }
 
-  onCapabilityDim(value, opts, callback) {
-    if(value == 0) {
-      var brightness = 1;
-    } else {
-      this.sendCommand(this.getData().id, '{"id": 1, "method": "set_power", "params":["on", "smooth", 500, 1]}');
-    }
-    callback(null, value);
-  }
-
-  onCapabilityNightMode(value, opts, callback) {
-    if (value) {
-      this.sendCommand(this.getData().id, '{"id": 1, "method": "set_power", "params":["on", "smooth", 500, 5]}');
-    } else {
-      this.sendCommand(this.getData().id, '{"id": 1, "method": "set_power", "params":["on", "smooth", 500, 1]}');
-    }
-    callback(null, value);
-  }
-
   async onCapabilityDim(value, opts, callback) {
     let brightness = value === 0 ? 1 : value * 100;
     let overWriteDimVal;
